@@ -54,7 +54,7 @@ export default function Search() {
         if (minBudget) p.set('minBudget', minBudget);
         if (maxBudget) p.set('maxBudget', maxBudget);
         if (sort)      p.set('sort', sort);
-        const res = await fetch(`http://localhost:5000/api/search/jobs?${p}`);
+        const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/search/jobs?${p}`);
         const d = await res.json();
         setJobs(d.projects || []);
       } else if (tab === 'freelancers') {
@@ -63,11 +63,11 @@ export default function Search() {
         if (skill)     p.set('skill', skill);
         if (minRating) p.set('minRating', minRating);
         if (sort)      p.set('sort', sort);
-        const res = await fetch(`http://localhost:5000/api/search/freelancers?${p}`);
+        const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/search/freelancers?${p}`);
         const d = await res.json();
         setFreelancers(d.freelancers || []);
       } else if (tab === 'ai-matches') {
-        const res = await fetch(`http://localhost:5000/api/search/recommendations`, {
+        const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/search/recommendations`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const d = await res.json();
@@ -79,7 +79,7 @@ export default function Search() {
   };
 
   const fetchProjects = async () => {
-    const res = await fetch('http://localhost:5000/api/projects/my-projects', { headers:{Authorization:`Bearer ${token}`} });
+    const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/projects/my-projects`, { headers:{Authorization:`Bearer ${token}`} });
     const d = await res.json();
     if (res.ok) setProjects((d.projects||[]).filter(p=>p.status==='open'&&p.isActive));
   };
@@ -92,7 +92,7 @@ export default function Search() {
     if (!invite.projectId) return alert('Select a project');
     setInviting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/invitations/invite', {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/invitations/invite`, {
         method:'POST', headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},
         body: JSON.stringify({ projectId:invite.projectId, freelancerId:selF._id, message:invite.message })
       });

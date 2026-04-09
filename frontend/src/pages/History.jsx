@@ -41,8 +41,8 @@ export default function History() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const [escrowRes, reviewRes] = await Promise.all([
-        fetch('http://localhost:5000/api/escrow/my-escrows', { headers }),
-        fetch(`http://localhost:5000/api/reviews/${role === 'employer' ? 'my-reviews' : 'received'}`, { headers }),
+        fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/escrow/my-escrows`, { headers }),
+        fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/reviews/${role === 'employer' ? 'my-reviews' : 'received'}`, { headers }),
       ]);
 
       if (escrowRes.ok) {

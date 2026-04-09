@@ -9,7 +9,7 @@ export default function Profile() {
   useEffect(() => { fetchProfile(); }, []);
 
   const fetchProfile = () => {
-    fetch('http://localhost:5000/api/user/me', {
+    fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/user/me`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
     .then(res => {
@@ -29,7 +29,7 @@ export default function Profile() {
          submitData.skills = submitData.skills.split(',').map(s => s.trim()).filter(Boolean);
       }
 
-      const res = await fetch('http://localhost:5000/api/user/update', {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/user/update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` },
         body: JSON.stringify(submitData)

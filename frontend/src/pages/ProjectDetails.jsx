@@ -30,7 +30,7 @@ export default function ProjectDetails() {
   useEffect(() => {
     const fetchProj = async () => {
       try {
-        const pRes = await fetch(`http://localhost:5000/api/projects/${id}`);
+        const pRes = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/projects/${id}`);
         const pData = await pRes.json();
         if (!pRes.ok) throw new Error(pData.message);
         
@@ -38,7 +38,7 @@ export default function ProjectDetails() {
         setBidAmount(pData.project.budget || '');
         
         if (pData.project.status === 'completed') {
-          const rRes = await fetch(`http://localhost:5000/api/reviews/project/${id}`);
+          const rRes = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/reviews/project/${id}`);
           if (rRes.ok) {
             const rData = await rRes.json();
             setReview(rData.review);
@@ -57,7 +57,7 @@ export default function ProjectDetails() {
     e.preventDefault();
     setIsApplying(true);
     try {
-      const res = await fetch('http://localhost:5000/api/applications/apply', {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/applications/apply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ projectId: id, bidAmount, estimatedDays, coverLetter })

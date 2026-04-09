@@ -171,10 +171,10 @@ export default function ManageProject() {
   const fetchAll = async () => {
     try {
       const [pRes, appRes, escRes, invRes] = await Promise.all([
-        fetch(`http://localhost:5000/api/projects/${id}`),
-        fetch(`http://localhost:5000/api/applications/project/${id}`, { headers }),
-        fetch(`http://localhost:5000/api/escrow/${id}`, { headers }),
-        fetch(`http://localhost:5000/api/invitations/project/${id}`, { headers }),
+        fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/projects/${id}`),
+        fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/applications/project/${id}`, { headers }),
+        fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/escrow/${id}`, { headers }),
+        fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/invitations/project/${id}`, { headers }),
       ]);
 
       if (!pRes.ok) throw new Error('Project not found');
@@ -184,7 +184,7 @@ export default function ManageProject() {
       if (escRes.ok) { const d = await escRes.json(); setEscrow(d.escrow); }
       if (invRes.ok) { const d = await invRes.json(); setInvitations(d.invitations || []); }
 
-      const revRes = await fetch(`http://localhost:5000/api/reviews/project/${id}`);
+      const revRes = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/reviews/project/${id}`);
       if (revRes.ok) { const d = await revRes.json(); setExistingReview(d.review); }
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -193,7 +193,7 @@ export default function ManageProject() {
   const handleAccept = async (appId) => {
     if (!window.confirm('Accept this proposal? Remaining proposals will be rejected.')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/applications/accept/${appId}`, { method: 'PUT', headers });
+      const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/applications/accept/${appId}`, { method: 'PUT', headers });
       const d = await res.json();
       if (!res.ok) throw new Error(d.message);
       fetchAll();
@@ -203,7 +203,7 @@ export default function ManageProject() {
   const handleFundEscrow = async () => {
     setShowPaymentModal(false);
     try {
-      const res = await fetch('http://localhost:5000/api/escrow/fund', {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/escrow/fund`, {
         method: 'POST',
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({ projectId: id, amount: project.budget })
@@ -217,7 +217,7 @@ export default function ManageProject() {
   const handleRelease = async () => {
     if (!window.confirm('Release payment to freelancer? This marks the project as completed.')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/escrow/release/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/escrow/release/${id}`, {
         method: 'PUT',
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({ note: 'Work approved. Payment released.' })
@@ -233,7 +233,7 @@ export default function ManageProject() {
     if (!project.assignedFreelancer) return;
     setReviewSubmitting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/reviews/add', {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/reviews/add`, {
         method: 'POST',
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -24,7 +24,7 @@ export default function Inbox() {
 
   const fetchInvitations = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/invitations/my-invitations', {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/invitations/my-invitations`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       const data = await res.json();
@@ -35,7 +35,7 @@ export default function Inbox() {
 
   const handleRespond = async (invite, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/invitations/${invite._id}/respond`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/invitations/${invite._id}/respond`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
         body: JSON.stringify({ status })

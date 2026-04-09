@@ -28,8 +28,8 @@ export default function Dashboard() {
   const fetchDashboardData = async () => {
     try {
       const endpoint = role === 'employer'
-        ? 'http://localhost:5000/api/projects/my-projects'
-        : 'http://localhost:5000/api/applications/my-applications';
+        ? `${import.meta.env.VITE_SERVER_BASE_URL}/api/projects/my-projects`
+        : `${import.meta.env.VITE_SERVER_BASE_URL}/api/applications/my-applications`;
       const res = await fetch(endpoint, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
       const result = await res.json();
       if (!res.ok) throw new Error(result.message);

@@ -19,7 +19,7 @@ export default function CreateProject() {
     setLoading(true);
     try {
       const skillsArr = formData.skillsRequired.split(',').map(s => s.trim()).filter(Boolean);
-      const res = await fetch('http://localhost:5000/api/projects/create', {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/projects/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
