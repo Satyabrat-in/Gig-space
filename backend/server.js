@@ -8,7 +8,7 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({origin : ["https://gig-space-bay.vercel.app", "http://localhost:5173"]}));
 app.use(express.json());
 
 // Routes
